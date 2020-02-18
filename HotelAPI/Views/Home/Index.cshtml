@@ -1,0 +1,34 @@
+﻿@model FlightVM
+@using Microsoft.AspNetCore.Identity;
+@using ConsoleApp2.Models
+@{
+    ViewData["Title"] = "Home Page";
+}
+    <div style="width: 18rem; margin: auto; width: 60%;  padding: 10px;">
+        <h1>Welcome to WeFly!</h1>
+
+        @inject SignInManager<AppUser> SignInManager
+        @inject UserManager<AppUser> UserManager
+
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <h3>First time with us? Go to <a asp-action="Register" asp-controller="Account">Login page</a> and make your account.</h3>
+            <h3>Already have an account? Go to <a asp-action="Login" asp-controller="Account">Register page</a> and go booking!</h3>
+        }
+        else
+        {
+            <h3>Hi there @UserManager.GetUserName(User)!</h3>
+
+            var _user = new AppUser
+            {
+                Id = UserManager.GetUserId(User),
+                UserName = UserManager.GetUserName(User),
+            };
+            @if (UserManager.IsInRoleAsync(_user, "admin").Result == false)
+            {
+                <h3><a asp-controller="flight" asp-action="UserFlightView">Check our bookings</a></h3>
+            }
+        }
+            <br />
+            <img class="d-inline-block align-middle mr-2" src="~/Images/home_picture.png" />
+        </div>

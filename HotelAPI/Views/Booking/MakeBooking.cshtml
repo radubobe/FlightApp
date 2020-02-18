@@ -1,0 +1,29 @@
+﻿@model UserReservedFlightVM
+@{
+    ViewBag.Title = "Create booking";
+}
+    <form method="post">
+        <div class="card" style="width: 18rem; margin: auto; width: 60%; border: 3px solid black; padding: 10px;">
+            @{var photoPath = "~/images/" + (@Model.PhotoPath ?? "no_image.png");}
+            <img width="auto" height="auto" src="@photoPath" class="card-img-top" asp-append-version="true"/>
+            <h3>Almost ready! One step to complete the booking.</h3>
+            <h3>Please enter the seats you want to reserve and press the 'Make booking' button.</h3>
+            <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" role="img"><image href="@photoPath" height="200" width="200"></image></svg>  -->
+            <div class="card-body">
+                <h5 class="card-title">@Model.PlaneName</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Route: @Model.Route</li>
+                <li class="list-group-item">Departure: @Model.Departure</li>
+                <li class="list-group-item">Arrive: @Model.Arrive</li>
+                <li class="list-group-item">Price: @Model.Price $</li>
+            </ul>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="SeatsReserved"></label>
+                    <input class="form-control" type="text" name="NumberOfReservedSeats" id="NumberOfReservedSeats" />
+                </div>
+                <button type="submit" asp-action="MakeBooking" asp-route-flightId="@Model.FlightId" asp-route-userId="@Model.UserId" class="card-link">Make booking</button>
+            </div>
+        </div>
+    </form>

@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ConsoleApp2.Models;
+
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var _user = new AppUser
+    {
+        Id = UserManager.GetUserId(User),
+        UserName = UserManager.GetUserName(User),
+    };
+
+    @if (UserManager.IsInRoleAsync(_user, "admin").Result == true)
+    {
+        <ul class="navbar-nav mr-auto">
+        </ul>
+
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @UserManager.GetUserName(User)
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-action="CreateRole" asp-controller="Role">Create role</a>
+                    <a class="dropdown-item" asp-action="ListRoles" asp-controller="Role">List roles</a>
+                    <a class="dropdown-item" asp-action="AdminFlightView" asp-controller="Flight">Manage flights</a>
+
+                </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" asp-action="LogoutUserFromPage" asp-controller="Account">Log out</a></li>
+        </ul>
+    }
+    else
+    {
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" asp-action="UserFlightView" asp-controller="Flight">Check our flights</a></li>
+        </ul>
+
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @UserManager.GetUserName(User)
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-action="MyBookings" asp-controller="Booking" asp-route-UserId=@UserManager.GetUserId(User)>My bookings</a>
+                </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" asp-action="LogoutUserFromPage" asp-controller="Account">Log out</a></li>
+        </ul>
+
+    }
+
+}
+else
+{
+    <ul class="navbar-nav mr-auto">
+    </ul>
+
+    <ul class="navbar-nav navbar-right">
+        <li class="nav-item"><a class="nav-link" asp-action="Login" asp-controller="Account">Log in</a></li>
+        <li class="nav-item"><a class="nav-link" asp-action="Register" asp-controller="Account">Register</a></li>
+    </ul>
+}

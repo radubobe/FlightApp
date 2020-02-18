@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ConsoleApp2.Models.Flight>
+
+@{
+    ViewData["Title"] = "IndexUser";
+}
+@using Microsoft.AspNetCore.Identity
+@using ConsoleApp2.Models;
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+<h2>Our Flights</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a> Photo</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlaneName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price) $
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Arrive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var photoPath = "~/images/" + (@item.PhotoPath ?? "no_image.png");
+            <tr>
+                <td>
+                    <img width="auto" height="100px" src="@photoPath"
+                         asp-append-version="true" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlaneName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seats)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Route)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Arrive)
+                </td>
+                <td>
+                    <a asp-action="MakeBooking" asp-controller="Booking" asp-route-flightId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">Make Booking</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

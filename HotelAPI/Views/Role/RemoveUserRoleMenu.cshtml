@@ -1,0 +1,28 @@
+﻿@model UsersInRole
+@{
+    ViewData["Title"] = "Create role";
+}
+
+@{ var usersInRole = Model.Users; }
+<h2> Users in this role</h2>
+
+@if (usersInRole.Count() > 0)
+{
+    foreach (var user in usersInRole)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role Id : @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+                <h5 class="card-title">@user.Email</h5>
+            </div>
+            <div class="card-footer">
+                <form method="post">
+                    <button asp-action="RemoveUserRoleMenu" asp-route-roleId="@Model.RoleId" asp-route-userId="@user.Id" type="submit" class="btn btn-sm btn-danger">Remove user</button>
+                </form>
+            </div>
+        </div>
+    }
+}

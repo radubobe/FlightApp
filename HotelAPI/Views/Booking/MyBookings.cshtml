@@ -1,0 +1,49 @@
+﻿@model List<UserReservedFlightVM>
+
+@using Microsoft.AspNetCore.Identity
+@using ConsoleApp2.Models;
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewBag.Title = "My Bookings";
+}
+
+<h1>My bookings</h1>
+<br />
+
+
+@if (Model.Any())
+{
+    // for each booking the user has, print the details about flight
+    @foreach (var b in Model)
+    {
+     <form method="post">
+         <div class="card" style="width: 18rem;">
+             @{var photoPath = "~/images/" + (b.PhotoPath ?? "no_image.png");}
+             <img width="auto" height="auto" src="@photoPath" class="card-img-top" asp-append-version="true" />
+             <div class="card-body">
+                 <h5 class="card-title">@b.PlaneName</h5>
+             </div>
+             <ul class="list-group list-group-flush">
+                 <li class="list-group-item">Route: @b.Route</li>
+                 <li class="list-group-item">Departure: @b.Departure</li>
+                 <li class="list-group-item">Arrive: @b.Arrive</li>
+                 <li class="list-group-item">Price: @b.Price $</li>
+                 <li class="list-group-item">Number of seats: @b.SeatsReserved</li>
+             </ul>
+             <div class="card-body">
+                 <button type="submit" asp-action="DeleteBooking" asp-controller="Booking" asp-route-bookingId="@b.BookId" class="card-link">Cancel booking</button>
+             </div>
+         </div>
+    </form>
+    <br />
+    }
+
+}
+else
+{
+    <h2>You have no bookings.</h2>
+    <h2>You can <a asp-action="UserFlightView" asp-controller="Flight">check our flights</a> to make a booking.</h2>
+}
